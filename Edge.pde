@@ -1,31 +1,40 @@
-public class Edge {
-    Vertex vertex1, vertex2;
-    ArrayList<Face> neighbours;
-    public Edge(Vertex v1, Vertex v2) {
-        this.vertex1 = v1;
-        this.vertex2 = v2;
-        neighbours = new ArrayList<Face>();
-    }
+public static class Edge {
+  Vertex vertex1, vertex2;
+  public Edge(Vertex v1, Vertex v2) {
+    this.vertex1 = v1;
+    this.vertex2 = v2;
+  }
 
-    public Vertex edgePoint(){
-        Vertex midPoint = Vertex.PVecToVertex(PVector.div(Vertex.add(vertex1, vertex2).getPVector(), 2));
-        Vertex facePointsAverage = new Vertex();
-        for (Face neighbor : neighbours) {
-          facePointsAverage = Vertex.add(facePointsAverage, neighbor.averageFacePoint());
-        }
-        facePointsAverage = Vertex.PVecToVertex(PVector.div(facePointsAverage.getPVector(), neighbours.size()));
-        float n = neighbours.size();
-        float factor = 1.0 / n * (n - 3) / (n - 1);
-        return Vertex.PVecToVertex(PVector.add(PVector.mult(midPoint.getPVector(), factor),PVector.mult(facePointsAverage.getPVector(), 1 - factor)));
-    }
+  public Vertex edgePoint(ArrayList<Face> neighbours) {
+    //TODO: Calculate edgePoint
+    // Set each edge point to be the average of the two neighbouring face points (A,F) and the two endpoints of the edge (vertex1,vertex2)
+  }
 
-    public void addFace(Face f){
-        if (!neighbours.contains(f)) {
-            neighbours.add(f);
-        }
+  // This function return an arraylist of all Edges contains the vertex, in normal circumstances listOfEdge is Face.getEdges()
+  public static ArrayList<Edge> findEdgeOfVertex(Vertex vertex, ArrayList<Edge> listOfEdge){
+    ArrayList<Edge> edgeOfVertex = new ArrayList<Edge>();
+    for (Edge e : listOfEdge) {
+      if (e.containVertex(vertex)) {
+        edgeOfVertex.add(e);
+      }
     }
-    @Override
-    public String toString(){
-        return "[Vertex:"+vertex1+", "+vertex2+"][Neighours size:"+neighbours.size()+"]";
-    }
+    return edgeOfVertex;
+  }
+
+  public boolean containVertex(Vertex v){
+    return (v.equals(vertex1) || v.equals(vertex2));
+  }
+  
+  @Override
+    public String toString() {
+    return "[Vertex:"+vertex1+", "+vertex2+"]";
+  }
+
+  @Override
+    public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Edge e = (Edge) obj;
+    return (e.vertex1.equals(vertex1)&&e.vertex2.equals(vertex2))||(e.vertex1.equals(vertex2)&&e.vertex2.equals(vertex1));
+  }
 }
