@@ -333,26 +333,31 @@ ArrayList<Face> getIcosahedronFace(){
   v11 front upper left
   v12 mid left center
   */
+  //Front face
   tmp.add(new Face(v1, v2, v9)); //Red
   tmp.add(new Face(v1, v2, v11));//green
   tmp.add(new Face(v1, v11, v6)); //blue
   tmp.add(new Face(v1, v5, v6)); //yellow
   tmp.add(new Face(v1, v5, v9)); //cyan
+
+  //backface
   tmp.add(new Face(v4, v12, v3));
   tmp.add(new Face(v4,v7,v8));
   tmp.add(new Face(v4,v12,v8));
   tmp.add(new Face(v4,v10,v7));
   tmp.add(new Face(v4,v10,v3));
-  tmp.add(new Face(v9, v5, v10));
+
+  // all the mid one
   tmp.add(new Face(v9, v7, v10));
+  tmp.add(new Face(v9, v5, v10));
   tmp.add(new Face(v9, v7, v2));
-  tmp.add(new Face(v5, v6, v3));
-  tmp.add(new Face(v12, v6, v11));
-  tmp.add(new Face(v12, v6, v3));
+  tmp.add(new Face(v2,v7,v8));
   tmp.add(new Face(v2, v11, v8));
-  tmp.add(new Face(v2,v8,v7));
-  tmp.add(new Face(v5,v10,v3));
+  tmp.add(new Face(v11, v6, v12));
   tmp.add(new Face(v11,v8,v12));
+  tmp.add(new Face(v3,v5, v6));
+  tmp.add(new Face(v3,v12, v6));
+  tmp.add(new Face(v3,v5,v10));
   return tmp;
 }
 
