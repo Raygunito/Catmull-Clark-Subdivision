@@ -6,8 +6,14 @@ public static class Edge {
   }
 
   public Vertex edgePoint(ArrayList<Face> neighbours) {
-    //TODO: Calculate edgePoint
     // Set each edge point to be the average of the two neighbouring face points (A,F) and the two endpoints of the edge (vertex1,vertex2)
+    Vertex avgEdge = Vertex.mult(Vertex.add(vertex1,vertex2),0.5);
+    Vertex avgFace = new Vertex();
+    for (Face f : neighbours) {
+      avgFace = Vertex.add(avgFace,f.averageFacePoint());
+    }
+    avgFace = Vertex.mult(avgFace,1.0/(float)neighbours.size());
+    return Vertex.mult(Vertex.add(avgEdge,avgFace),0.5);
   }
 
   // This function return an arraylist of all Edges contains the vertex, in normal circumstances listOfEdge is Face.getEdges()
@@ -24,7 +30,7 @@ public static class Edge {
   public boolean containVertex(Vertex v){
     return (v.equals(vertex1) || v.equals(vertex2));
   }
-  
+
   @Override
     public String toString() {
     return "[Vertex:"+vertex1+", "+vertex2+"]";
