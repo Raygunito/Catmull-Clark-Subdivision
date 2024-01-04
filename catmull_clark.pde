@@ -56,7 +56,7 @@ void setup() {
                   .setPosition(10, 10)
                   .setSize(40, 40)
                   .setColorForeground(color(120))
-                  .setColorActive(color(0))
+                  .setColorActive(color(255,10,10))
                   .setColorLabel(color(120))
                   .setItemsPerRow(1)
                   .setSpacingColumn(50);
