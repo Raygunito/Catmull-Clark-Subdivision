@@ -4,18 +4,20 @@ float angleX = 0;
 float angleY = 0;
 float rotationSpeed = 0.01;
 color[] colors = {
-  color(255, 0, 0, 66.6), // Red
-  color(0, 255, 0, 66.6), // Green
-  color(0, 0, 255, 66.6), // Blue
-  color(255, 255, 0, 66.6), // Yellow
-  color(0, 255, 255, 66.6), // Cyan
-  color(255, 0, 255, 66.6)  // Magenta
+  color(255, 0, 0, 88.8), // Red
+  color(0, 255, 0, 88.8), // Green
+  color(0, 0, 255, 88.8), // Blue
+  color(255, 255, 0, 88.8), // Yellow
+  color(0, 255, 255, 88.8), // Cyan
+  color(255, 0, 255, 88.8)  // Magenta
 };
 ControlP5 cp5;
 Slider slider;
 Slider sliderSize;
-RadioButton formRadio;
+RadioButton formRadio,colorRadio;
 int sliderValue;
+ColorWheel colorWheel;
+boolean isCustom;
 
 String[] formOptions = {"Cube","Pyramid","Tetrahedron","Octahedron","Icosahedron"};
 String selectedForm;
@@ -67,6 +69,21 @@ void setup() {
   formRadio.addItem("Icosahedron", 4).setCaptionLabel("Icosahedron");
 
   formRadio.activate(0);
+
+  colorRadio = cp5.addRadioButton("ColorMode")
+                    .setPosition(width-200, 10)
+                    .setSize(30, 30)
+                    .setColorForeground(color(120))
+                    .setColorActive(color(255,10,10))
+                    .setColorLabel(color(120))
+                    .addItem("Default", 1)
+                    .addItem("Custom", 2);
+  colorRadio.activate(0);
+  isCustom = false;
+  colorWheel = cp5.addColorWheel("colorWheel")
+                    .setPosition(width-200, 100)
+                    .setRGB(color(255, 0, 0))
+                    .setVisible(false);
 }
 
 
@@ -79,7 +96,12 @@ void draw() {
   drawMesh();
   popMatrix();
   slider.bringToFront();
+  sliderSize.bringToFront();
+  formRadio.bringToFront();
+  colorRadio.bringToFront();
+  colorWheel.bringToFront();
 }
+
 
 void sliderEvent(int value){
   sliderValue = value;
@@ -99,6 +121,19 @@ void controlEvent(ControlEvent theEvent) {
     int selectedValue = (int) theEvent.getValue();
     selectedForm = formOptions[selectedValue];
     updateMesh();
+  }
+  if (theEvent.isFrom(colorRadio)){
+    int type = (int) theEvent.getValue();
+    switch (type) {
+      case 2 :
+        colorWheel.setVisible(true);
+        isCustom = true;
+      break;
+      default :
+        colorWheel.setVisible(false);
+        isCustom = false;
+      break;	
+    }
   }
 }
 
@@ -227,14 +262,14 @@ Vertex calculateNewVertex(Vertex originalVertex, Vertex avgFacePoint, Vertex avg
 
 void drawMesh() {
   for (int i = 0; i < mesh.size(); i++) {
-    int colorIndex = i % colors.length;
-    fill(colors[colorIndex]);
+    if (isCustom){
+      fill(colorWheel.getRGB());
+    }else {
+      int colorIndex = i % colors.length;
+      fill(colors[colorIndex]);
+    }
     Face f = mesh.get(i);
     drawFace(f);
-    // drawSphere(f.averageFacePoint(),5);
-    // for (Edge e : f.getEdges()) {
-    //   drawCube(e.edgePoint(Face.findNeighbours(e,mesh)),10);
-    // }
   }
 }
 
